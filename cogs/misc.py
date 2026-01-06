@@ -4,7 +4,7 @@ from config import Config
 from sql import Sql
 from cogs.events import EventsCog
 from utils import Check
-from discord import ChannelType
+import discord
 
 class MiscCog(commands.Cog):
     def __init__(self, bot: commands.Bot, config: Config, sql: Sql):
