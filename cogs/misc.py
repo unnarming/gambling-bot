@@ -18,7 +18,7 @@ class MiscCog(commands.Cog):
 
     def bot_channel_check(ctx: commands.Context) -> bool:
         misc_cog = ctx.bot.get_cog("MiscCog")
-        if ctx.channel.id != misc_cog.config.bot_channel:
+        if ctx.channel.id != misc_cog.config.bot_channel and isinstance(ctx.channel, discord.TextChannel):
             raise EventsCog.WrongChannel(message=Check.BOT_CHANNEL.to_status().message)
 
         if isinstance(ctx.channel, discord.DMChannel) and not misc_cog.config.ENABLE_DMS:
