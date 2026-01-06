@@ -7,6 +7,7 @@ from sql.structs import CoinflipStats
 from utils import Status, Int
 from sql.coinflip import Coinflip
 from typing import List, Literal
+from cogs.misc import MiscCog
 
 class CoinflipCog(commands.Cog):
     def __init__(self, bot: commands.Bot, config: Config, sql: Sql):
@@ -34,6 +35,7 @@ class CoinflipCog(commands.Cog):
 
     @coinflip.command(name="self", description="Coinflip yourself")
     @commands.cooldown(1, 1, commands.BucketType.user)
+    @commands.check(MiscCog.bot_channel_check)
     async def self(self, ctx: commands.Context, amount: Int.Pos()):
         cf_res: Status = self.sql.self_coinflip(ctx.author.id, amount)
         if not cf_res.status:
