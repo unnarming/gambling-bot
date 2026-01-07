@@ -31,7 +31,7 @@ class CoinflipCog(commands.Cog):
         if not res.status:
             return await ctx.send(embed=self.embeds.error(res.message))
         
-        return await ctx.send(embed=self.embeds.base(title=f"Coinflip challenge sent to {user.mention} for {amount} money"))
+        return await ctx.send(embed=self.embeds.base(title=f"Coinflip Challenge", description=f"<@{user.id}> challenges <@{ctx.author.id}> to a coinflip of {amount}"))
 
     @coinflip.command(name="self", aliases=["me", "s"], description="Coinflip yourself")
     @commands.cooldown(1, 1, commands.BucketType.user)
@@ -65,7 +65,7 @@ class CoinflipCog(commands.Cog):
             ("💸Most Lost", f"``{cf_stats.most_lost} to {mlostto.display_name if mlostto else "``None``"}``"),
         ]
 
-        return await ctx.send(embed=self.embeds.stats(title=f"Coinflip statistics for {user.display_name}", *stats))
+        return await ctx.send(embed=self.embeds.stats(title=f"{user.display_name}'s cf stats", *stats))
 
     @coinflip.command(name="accept", description="Accept a coinflip request")
     async def accept(self, ctx: commands.Context, user: discord.Member | None = None, id: str | None = None):

@@ -4,6 +4,7 @@ from embeds import Embeds
 from config import Config
 from sql import Sql
 import os
+import asyncio
 
 class EventsCog(commands.Cog):
     def __init__(self, bot: commands.Bot, config: Config, sql: Sql):
@@ -28,25 +29,21 @@ class EventsCog(commands.Cog):
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.CommandNotFound):
             await ctx.send(embed=self.embeds.error("Command not found"))
-            return
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(embed=self.embeds.error("Missing required argument"))
-            return
         elif isinstance(error, commands.BadArgument):
             await ctx.send(embed=self.embeds.error("Invalid arguments"))
-            return
         elif isinstance(error, commands.ArgumentParsingError):
             await ctx.send(embed=self.embeds.error("Invalid argument format"))
-            return
         elif isinstance(error, commands.CheckFailure):
             await ctx.send(embed=self.embeds.error("Check failure"))
-            return
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(embed=self.embeds.error(f"Command on cooldown, try again in {error.retry_after:.2f} seconds"))
-            return
         elif isinstance(error, self.WrongChannel):
-            await ctx.send(embed=self.embeds.error(error.message))
-            return
+            msg = await ctx.send(embed=self.embeds.error(error.message))
+            await asyncio.sleep(3)
+            await msg.delete()
+            await ctx.message.delete()
+
         else:
             await ctx.send(embed=self.embeds.error(str(error)))
-            return
