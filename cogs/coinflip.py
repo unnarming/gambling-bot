@@ -33,7 +33,7 @@ class CoinflipCog(commands.Cog):
         
         return await ctx.send(embed=self.embeds.success(f"Coinflip challenge sent to {user.mention}"))
 
-    @coinflip.command(name="self", description="Coinflip yourself")
+    @coinflip.command(name="self", aliases=["me", "s"], description="Coinflip yourself")
     @commands.cooldown(1, 1, commands.BucketType.user)
     @commands.check(MiscCog.bot_channel_check)
     async def self(self, ctx: commands.Context, amount: Int.Pos()):
@@ -48,10 +48,12 @@ class CoinflipCog(commands.Cog):
             return await ctx.send(embed=self.embeds.error(f"You lost the coinflip and lost {cf_res.body['amount']} money"))
 
     @coinflip.command(name="stats", description="View your or another user's coinflip statistics")
-    async def stats(self, ctx: commands.Context, user: discord.Member | None = None):
-        if user is None:
+    async def stats(self, ctx: commands.Context, user: discord.Member | None = None, txt: str | None = "self"):
+        if user is None and txt.lower() == "self":
+            user = ctx.author
+        elif user is None:
             return await ctx.send(embed=self.embeds.error("Please specify a user to view statistics"))
-        cf_stats: CoinflipStats = self.sql.get_stats(user.id, "cf_stats")
+        cf_stats: CoinflipStats = self.sql.get_stats(user.id, CoinflipStats)
         mlostto: discord.User = self.bot.fetch_user(cf_stats.most_lost_to_id)
         return await ctx.send(embed=self.embeds.success(f"Statistics for {user.mention}:\nGames won: {cf_stats.games_won}\nGames lost: {cf_stats.games_lost}\nMoney won: {cf_stats.money_won}\nMoney lost: {cf_stats.money_lost}\nMost lost: {cf_stats.most_lost}\nMost lost to: {mlostto.mention}\nLoss streak: {cf_stats.loss_streak}"))
 

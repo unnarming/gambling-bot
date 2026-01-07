@@ -14,11 +14,11 @@ class MiscCog(commands.Cog):
         self.embeds: Embeds = Embeds(config)
 
     def check_permission(self, ctx: commands.Context) -> bool:
-        return ctx.author.id in self.config.permission_whitelist_uids
+        return ctx.author.id in self.config.PERMISSION_WHITELIST_UIDS
 
     def bot_channel_check(ctx: commands.Context) -> bool:
         misc_cog = ctx.bot.get_cog("MiscCog")
-        if ctx.channel.id != misc_cog.config.bot_channel and isinstance(ctx.channel, discord.TextChannel):
+        if ctx.channel.id != misc_cog.config.BOT_CHANNEL and isinstance(ctx.channel, discord.TextChannel):
             raise EventsCog.WrongChannel(message=Check.BOT_CHANNEL.to_status().message)
 
         if isinstance(ctx.channel, discord.DMChannel) and not misc_cog.config.ENABLE_DMS:

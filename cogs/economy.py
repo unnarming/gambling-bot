@@ -6,8 +6,7 @@ from sql import Sql
 import discord
 from utils import Int
 import random
-from utils import Status
-from utils import Check
+from utils import Check, Status
 from cogs.events import EventsCog
 from typing import List
 from sql.user import User

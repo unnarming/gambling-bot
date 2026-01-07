@@ -211,7 +211,7 @@ class Coinflip(SqlBase):
         req_stats: CoinflipStats = User.get_stats(self, cf.requester_id, CoinflipStats)
         opp_stats: CoinflipStats = User.get_stats(self, cf.opponent_id, CoinflipStats)
 
-        cf_res: Status = self.coinflip(cf.requester_id, req_stats.loss_streak, cf.opponent_id, opp_stats.loss_streak, cf.amount)
+        cf_res: Status = self.coinflip(cf.requester_id, 0, cf.opponent_id, 0, cf.amount)
 
         # update stats, coinflip always returns true
         winner = cf_res.body["winner"]
@@ -223,7 +223,7 @@ class Coinflip(SqlBase):
             money_lost=-cf.amount if loser == cf.requester_id else 0,
             most_lost=cf.amount if loser == cf.requester_id else 0,
             most_lost_to_id=cf.opponent_id if loser == cf.requester_id else 0,
-            loss_streak=0 if winner == cf.requester_id else req_stats.loss_streak + 1
+            loss_streak=req_stats.loss_streak
         )
         
         opp_stats.modify(
@@ -233,7 +233,7 @@ class Coinflip(SqlBase):
             money_lost=-cf.amount if loser == cf.opponent_id else 0,
             most_lost=cf.amount if loser == cf.opponent_id else 0,
             most_lost_to_id=cf.requester_id if loser == cf.opponent_id else 0,
-            loss_streak=0 if winner == cf.opponent_id else opp_stats.loss_streak + 1
+            loss_streak=opp_stats.loss_streak
         )
 
         User.set_stats(self, cf.requester_id, CoinflipStats, req_stats)
