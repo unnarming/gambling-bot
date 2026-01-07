@@ -29,7 +29,7 @@ class Embeds:
     def base(self, title: str = "", description: str = "", color: str = "neutral") -> discord.Embed:
         return discord.Embed(colour=self.color_enum[color]).add_field(name=title, value=description, inline=False)
 
-    def stats(self, title: str = "", *stats: tuple[str, str]) -> discord.Embed:
+    def stats(self, *stats: tuple[str, str], title: str = "") -> discord.Embed:
         embed: discord.Embed = self.base(title=title, color="neutral")
         for stat in stats:
             embed.add_field(name=stat[0], value=stat[1], inline=True)
