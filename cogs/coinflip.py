@@ -59,13 +59,13 @@ class CoinflipCog(commands.Cog):
         stats: list[tuple[str, str]] = [
             ("💰Money Made", f"``{cf_stats.money_won - cf_stats.money_lost}``"),
             ("🎮Games Played", f"``{cf_stats.games_won + cf_stats.games_lost}``"),
-            ("📈Win Rate", f"``{cf_stats.games_won / (cf_stats.games_won + cf_stats.games_lost) * 100}%``"),
+            ("📈Win Rate", f"``{round(cf_stats.games_won / (cf_stats.games_won + cf_stats.games_lost) * 100, 2)}%``"),
             ("✅Money Won", f"``{cf_stats.money_won}``"),
             ("❌Money Lost", f"``{cf_stats.money_lost}``"),
-            ("💸Most Lost", f"``{cf_stats.most_lost} to {mlostto.mention if mlostto else "``None``"}``"),
+            ("💸Most Lost", f"``{cf_stats.most_lost} to {mlostto.display_name if mlostto else "``None``"}``"),
         ]
 
-        return await ctx.send(embed=self.embeds.stats(title=f"Coinflip statistics for {user.mention}", *stats))
+        return await ctx.send(embed=self.embeds.stats(title=f"Coinflip statistics for {user.display_name}", *stats))
 
     @coinflip.command(name="accept", description="Accept a coinflip request")
     async def accept(self, ctx: commands.Context, user: discord.Member | None = None, id: str | None = None):
