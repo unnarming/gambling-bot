@@ -19,7 +19,6 @@ class EventsCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        os.system("cls")
         print(f'We have logged in as {self.bot.user}')
         synced = await self.bot.tree.sync()
         print(f'Synced {len(synced)} commands')
