@@ -18,5 +18,13 @@ class Embeds:
     def success(self, message: str) -> discord.Embed:
         return discord.Embed(colour=discord.Colour.green()).add_field(name="Success", value=message, inline=False)
 
-    def base(self, title: str = "", description: str = "") -> discord.Embed:
-        return discord.Embed(colour=discord.Colour.blurple()).add_field(name=title, value=description, inline=False)
+    color_enum = {
+        "success": discord.Colour.green(),
+        "error": discord.Colour.red(),
+        "info": discord.Colour.blurple(),
+        "warning": discord.Colour.yellow(),
+        "neutral": discord.Colour.light_grey(),
+    }
+
+    def base(self, title: str = "", description: str = "", color: str = "neutral") -> discord.Embed:
+        return discord.Embed(colour=self.color_enum[color]).add_field(name=title, value=description, inline=False)

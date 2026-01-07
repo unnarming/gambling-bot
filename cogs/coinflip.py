@@ -43,9 +43,9 @@ class CoinflipCog(commands.Cog):
         
         cf_res.body["winner"]
         if cf_res.body["winner"] == ctx.author.id:
-            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You won the coinflip and gained {cf_res.body['amount']}"))
+            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You won the coinflip and gained {cf_res.body['amount']}", color="success"))
         else:
-            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You lost the coinflip and lost {cf_res.body['amount']}"))
+            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You lost the coinflip and lost {cf_res.body['amount']}", color="error"))
 
     @coinflip.command(name="stats", description="View your or another user's coinflip statistics")
     async def stats(self, ctx: commands.Context, user: discord.Member | None = None, txt: str | None = "self"):
@@ -53,6 +53,8 @@ class CoinflipCog(commands.Cog):
             user = ctx.author
         elif user is None:
             return await ctx.send(embed=self.embeds.error("Please specify a user to view statistics"))
+        print(user)
+        print(user.id)
         cf_stats: CoinflipStats = self.sql.get_stats(user.id, CoinflipStats)
         mlostto: discord.User = await self.bot.fetch_user(cf_stats.most_lost_to_id)
         return await ctx.send(embed=self.embeds.base(title=f"Coinflip statistics", description=f"User: {user.mention}\nGames won: ``{cf_stats.games_won}``\nGames lost: ``{cf_stats.games_lost}``\nMoney won: ``{cf_stats.money_won}``\nMoney lost: ``{cf_stats.money_lost}``\nMost lost: ``{cf_stats.most_lost}``\nMost lost to: ``{mlostto.mention}``\nLoss streak: ``{cf_stats.loss_streak}``"))
