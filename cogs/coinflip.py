@@ -45,7 +45,7 @@ class CoinflipCog(commands.Cog):
         if cf_res.body["winner"] == ctx.author.id:
             return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You won the coinflip and gained {cf_res.body['amount']}"))
         else:
-            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You lost {cf_res.body['amount']}"))
+            return await ctx.send(embed=self.embeds.base(title="Coinflip result", description=f"You lost the coinflip and lost {cf_res.body['amount']}"))
 
     @coinflip.command(name="stats", description="View your or another user's coinflip statistics")
     async def stats(self, ctx: commands.Context, user: discord.Member | None = None, txt: str | None = "self"):
