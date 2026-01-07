@@ -139,9 +139,10 @@ class Coinflip(SqlBase):
     @usercheck
     @check_expired
     def self_coinflip(self, discord_id: int, amount: int) -> Status:
-        if not User.check_balance(self,discord_id, amount, "self").status:
-            return Check.USER_BAL_SELF.to_status()
-
+        c: Status = User.check_balance(self,discord_id, amount, "self")
+        if not c.status:
+            return c
+        
         stats: CoinflipStats = User.get_stats(self, discord_id, CoinflipStats)
 
         cf_res: Status = self.coinflip(requester_id=discord_id, req_loss_streak=stats.loss_streak, amount=amount)
