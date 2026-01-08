@@ -40,6 +40,8 @@ class EconomyCog(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.check(MiscCog.bot_channel_check)
     async def beg(self, ctx: commands.Context):
+        if self.sql.get_balance(ctx.author.id) > 100000:
+            return await ctx.send(embed=self.embeds.error("You're too rich to beg"))
         if random.random() < 0.8333333333333334:
             beg_opts: list[int] = [50, 50, 50, 50, 50, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 300, 500, 900, 500, 900, 2000]
             robbed_opts: list[int] = [50, 50, 50, 50, 50, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300, 300, 300, 300, 500, 900, 500, 900, 1000]
